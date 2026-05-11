@@ -22,7 +22,8 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     url = f'{BASE_API_URL}/term{TERM}/proceedings/{proceeding_number}/{date}/transcripts/{transcript_number}'
     response = requests.get(url)
     if not response.ok:
-        return f"coś poszło nie tak: {response.status_code}, url:{url}"
+        print(f'coś poszło nie tak?? url:{url}')
+        return response.status_code
 
     html_transcript = response.text
     parsed_transcript = BeautifulSoup(html_transcript, 'html.parser')
@@ -44,7 +45,11 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
 
 
 speeches = get_speech_transcripts(1, '2023-11-13', 1, )
-for speeche in speeches:
-    for speaker, transcript in speeche.items():
-        print(f'speaker: {speaker}\n\n'
-              f'{transcript}')
+if type(speeches) != str:
+    print(f'coś poszło nie tak, error: {speeches}')
+else:
+    for speeche in speeches:
+        print(speeches)
+        for speaker, transcript in speeche.items():
+            print(f'speaker: {speaker}\n\n'
+                  f'{transcript}')
