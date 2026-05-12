@@ -1,3 +1,9 @@
+import json
+import pathlib
+import random
+import string
+from tokenize import endpats
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -44,17 +50,23 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     return transcripts
 
 
-def write_speech_to_json(transcript, proceeding):
-    file_apth = '../speeche/'
+def write_speech_to_json(proceeding_number, date, transcript_number, salted_filename=False):
+    base_dir = f'../speeches/{date}/proceeding{proceeding_number}'
+    base_file_path = f'{base_dir}/transcript{transcript_number}'
+    pathlib.Path(base_dir).mkdir(parents=True, exist_ok=True)
+    speeches = get_speech_transcripts(proceeding_number, date, transcript_number)
+    if type(speeches) == int:
+        raise Exception(f'coś poszło nie tak, error: {speeches}')
+    for speech in speeches:
+        json_content = json.dumps(speech, indent=4, ensure_ascii=False)
+        random_string = ''.join(random.choice(string.ascii_lowercase) for _ in range(4))
+        file_path = base_file_path + f'_{random_string}.json' if salted_filename else base_file_path + '.json'
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(json_content)
 
 
 if __name__ == "__main__":
-    speeches = get_speech_transcripts(1, '2023-11-13', 1, )
-    if type(speeches) == int:
-        print(f'coś poszło nie tak, error: {speeches}')
-    else:
-        for speeche in speeches:
-            print(speeches)
-            for speaker, transcript in speeche.items():
-                print(f'speaker: {speaker}\n\n'
-                      f'{transcript}')
+    try:
+        write_speech_to_json(1, '2023-11-13', 1)
+    except Exception as e:
+        print(f'coś poszło nie tak: {e}')
