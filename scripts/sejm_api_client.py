@@ -44,12 +44,17 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     return transcripts
 
 
-speeches = get_speech_transcripts(1, '2023-11-13', 1, )
-if type(speeches) != str:
-    print(f'coś poszło nie tak, error: {speeches}')
-else:
-    for speeche in speeches:
-        print(speeches)
-        for speaker, transcript in speeche.items():
-            print(f'speaker: {speaker}\n\n'
-                  f'{transcript}')
+def write_speech_to_json(transcript, proceeding):
+    file_apth = '../speeche/'
+
+
+if __name__ == "__main__":
+    speeches = get_speech_transcripts(1, '2023-11-13', 1, )
+    if type(speeches) == int:
+        print(f'coś poszło nie tak, error: {speeches}')
+    else:
+        for speeche in speeches:
+            print(speeches)
+            for speaker, transcript in speeche.items():
+                print(f'speaker: {speaker}\n\n'
+                      f'{transcript}')
