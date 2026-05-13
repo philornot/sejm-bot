@@ -1,7 +1,5 @@
 import json
 import pathlib
-import random
-import string
 
 import requests
 from bs4 import BeautifulSoup
@@ -63,8 +61,24 @@ def write_speech_to_json(proceeding_number, date, transcript_number):
         file.write(json_content)
 
 
+def read_speeches_from_json(proceeding_number, date, transcript_number):
+    file_path = f'../speeches/{date}/proceeding{proceeding_number}/transcript{transcript_number}.json'
+    with open(file_path, 'r') as json_file:
+        speeches = json.load(json_file)
+    return speeches
+
+
 if __name__ == "__main__":
     try:
         write_speech_to_json(1, '2023-11-13', 1)
     except Exception as e:
-        print(f'something went wrong: {e}')
+        print(f'something went wrong with writing speech to json: {e}')
+
+    try:
+        speeches = read_speeches_from_json(1, '2023-11-13', 1)
+        for speech in speeches:
+            for speaker, transcript in speech.items():
+                print(f'{speaker}:\n\n'
+                      f'{transcript}')
+    except Exception as e:
+        print(f'something went wrong with reading the speeches from json: {e}')
