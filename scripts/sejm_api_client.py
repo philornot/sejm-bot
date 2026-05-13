@@ -27,7 +27,7 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     url = f'{BASE_API_URL}/term{TERM}/proceedings/{proceeding_number}/{date}/transcripts/{transcript_number}'
     response = requests.get(url)
     if not response.ok:
-        print(f'coś poszło nie tak?? url:{url}')
+        print(f'something went wrong?? url:{url}')
         return response.status_code
 
     html_transcript = response.text
@@ -55,7 +55,7 @@ def write_speech_to_json(proceeding_number, date, transcript_number, salted_file
     pathlib.Path(base_dir).mkdir(parents=True, exist_ok=True)
     speeches = get_speech_transcripts(proceeding_number, date, transcript_number)
     if type(speeches) == int:
-        raise Exception(f'coś poszło nie tak, error: {speeches}')
+        raise Exception(f'something went wrong, error: {speeches}')
     for speech in speeches:
         json_content = json.dumps(speech, indent=4, ensure_ascii=False)
         random_string = ''.join(random.choice(string.ascii_lowercase) for _ in range(4))
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     try:
         write_speech_to_json(1, '2023-11-13', 1)
     except Exception as e:
-        print(f'coś poszło nie tak: {e}')
+        print(f'something went wrong: {e}')
