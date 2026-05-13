@@ -49,19 +49,18 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     return transcripts
 
 
-def write_speech_to_json(proceeding_number, date, transcript_number, salted_filename=False):
+def write_speech_to_json(proceeding_number, date, transcript_number):
     base_dir = f'../speeches/{date}/proceeding{proceeding_number}'
-    base_file_path = f'{base_dir}/transcript{transcript_number}'
+    file_path = f'{base_dir}/transcript{transcript_number}.json'
     pathlib.Path(base_dir).mkdir(parents=True, exist_ok=True)
+
     speeches = get_speech_transcripts(proceeding_number, date, transcript_number)
-    if type(speeches) == int:
-        raise Exception(f'something went wrong, error: {speeches}')
-    for speech in speeches:
-        json_content = json.dumps(speech, indent=4, ensure_ascii=False)
-        random_string = ''.join(random.choice(string.ascii_lowercase) for _ in range(4))
-        file_path = base_file_path + f'_{random_string}.json' if salted_filename else base_file_path + '.json'
-        with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(json_content)
+    if isinstance(speeches, int):
+        raise Exception(f'Request failed with status: {speeches}')
+
+    json_content = json.dumps(speeches, indent=4, ensure_ascii=False)
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(json_content)
 
 
 if __name__ == "__main__":
