@@ -2,7 +2,6 @@ import json
 import pathlib
 import random
 import string
-from tokenize import endpats
 
 import requests
 from bs4 import BeautifulSoup
