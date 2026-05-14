@@ -31,11 +31,11 @@ def save_proceeding_dates_to_file(term):
                 del proceeding[key]
         proceedings.append(proceeding)
 
-    dates = []
+    dates = {}
     for proceeding in proceedings:
         proceeding_dates = proceeding['dates']
-        for date in proceeding_dates:
-            dates.append(date)
+        proceeding_number = proceeding['number']
+        dates[proceeding_number] = [date for date in proceeding_dates]
 
     json_str = json.dumps(dates, indent=4)
     # print(json_str)
@@ -52,12 +52,12 @@ def read_proceeding_dates_from_file(term):
         term: Sejm term number (kadencja).
 
     Returns:
-        A list of date strings loaded from the file.
+        A dict of numbers and date strings loaded from the file.
     """
     file_path = f'../proceeding_dates/term{term}.json'
     with open(file_path, 'r') as json_file:
-        dates = json.load(json_file)
-    return dates
+        proceedings = json.load(json_file)
+    return proceedings
 
 
 for term in range(7, 11):
