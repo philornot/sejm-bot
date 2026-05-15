@@ -4,6 +4,8 @@ import pathlib
 import requests
 from bs4 import BeautifulSoup
 
+from scripts.save_and_read_proceeding_dates import read_proceeding_dates_from_file
+
 TERM = 10
 BASE_API_URL = 'https://api.sejm.gov.pl/sejm'
 
@@ -69,16 +71,16 @@ def read_speeches_from_json(proceeding_number, date, transcript_number):
 
 
 if __name__ == "__main__":
-    try:
-        write_speech_to_json(1, '2023-11-13', 1)
-    except Exception as e:
-        print(f'something went wrong with writing speech to json: {e}')
-
-    try:
-        speeches = read_speeches_from_json(1, '2023-11-13', 1)
-        for speech in speeches:
-            for speaker, transcript in speech.items():
-                print(f'{speaker}:\n\n'
-                      f'{transcript}')
-    except Exception as e:
-        print(f'something went wrong with reading the speeches from json: {e}')
+    proceeding_dates = read_proceeding_dates_from_file(TERM)
+    for proceeding_number, dates in proceeding_dates.items():
+        for date in dates:
+            print(f'trying date {date}')
+            try:
+                transcript_number = 1
+                while True:
+                    print(f'writing transcript {transcript_number} from proceeding {proceeding_number} from date {date} ')
+                    write_speech_to_json(proceeding_number, date, transcript_number)
+                    transcript_number += 1
+            except Exception as e:
+                print(f'sth went wrong with writing transcript from {date} (proceeding {proceeding_number}):\n{e}\n')
+                continue
