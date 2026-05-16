@@ -6,7 +6,8 @@ TERM = 10
 
 def save_progress_to_json(term):
     progress_file = f'term{term}_progress.json'
-    base_path = f'../speeches_term{term}'
+    repo_root = pathlib.Path(__file__).parent.parent
+    base_path = repo_root / f'speeches_term{term}'
     path = pathlib.Path(base_path)
 
     proceedings = sorted(path.iterdir(), key=lambda p: int(p.name.replace('proceeding', '')))
@@ -22,7 +23,7 @@ def save_progress_to_json(term):
                          key=lambda p: int(p.name.replace('transcript', '').replace('.json', '')))
     last_transcript = transcripts[-1].name
     last_transcript_number = int(last_transcript.replace('transcript', '').replace('.json', '')) - 1
-    last_transcript_path = f'{base_path}/{last_proceeding}/{last_date}/{last_transcript}'
+    last_transcript_path = str((base_path / last_proceeding / last_date / last_transcript).relative_to(repo_root))
 
     progress = {
         'last_proceeding': last_proceeding_number,
@@ -46,3 +47,7 @@ def read_progress_from_json(term):
     # last_transcript = progress['last_transcript']
     # full_path = progress['full_path']
     return progress
+
+
+if __name__ == "__main__":
+    save_progress_to_json(TERM)
