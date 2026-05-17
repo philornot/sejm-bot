@@ -4,6 +4,7 @@ import pathlib
 import requests
 from bs4 import BeautifulSoup
 
+from scripts.progress_monitoring import read_progress_from_json, save_progress_to_json
 from scripts.save_and_read_proceeding_dates import read_proceeding_dates_from_file
 
 TERM = 10
@@ -27,7 +28,7 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
     url = f'{BASE_API_URL}/term{TERM}/proceedings/{proceeding_number}/{date}/transcripts/{transcript_number}'
     response = requests.get(url)
     if not response.ok:
-        print(f'something went wrong?? url:{url}')
+        # print(f'something went wrong?? url:{url}')
         return response.status_code
 
     html_transcript = response.text
@@ -49,7 +50,7 @@ def write_speech_to_json(proceeding_number, date, transcript_number):
 
     speeches = get_speech_transcripts(proceeding_number, date, transcript_number)
     if isinstance(speeches, int):
-        raise Exception(f'Request failed with status: {speeches}')
+        raise RuntimeError(f'Request failed with status: {speeches}')
 
     json_content = json.dumps(speeches, indent=4, ensure_ascii=False)
     with open(file_path, 'w', encoding='utf-8') as file:
@@ -64,19 +65,37 @@ def read_speeches_from_json(proceeding_number, date, transcript_number):
 
 
 if __name__ == "__main__":
+    progress_data = read_progress_from_json(TERM)
+    last_proceeding = progress_data['last_proceeding']
+    last_date = progress_data['last_date']
+    last_transcript = progress_data['last_transcript']
+    # full_path = progress_data['full_path']
     proceeding_dates = read_proceeding_dates_from_file(TERM)
+    print(f'found last saved transcript: proceeding {last_proceeding}, {last_date}, transcript {last_transcript}')
     for proceeding_number, dates in proceeding_dates.items():
+        if int(proceeding_number) < last_proceeding:
+            continue
         for date in dates:
+            if date < last_date:
+                continue
             print(f'trying date {date}')
             transcript_number = 1
             while True:
+                if transcript_number < last_transcript:
+                    transcript_number += 1
+                    continue
                 try:
                     print(f'writing transcript {transcript_number} from proceeding {proceeding_number} from date {date}')
                     write_speech_to_json(proceeding_number, date, transcript_number)
                     transcript_number += 1
                 except RuntimeError:
+                    save_progress_to_json(TERM)
                     print(f'no more transcripts for date {date} (last: {transcript_number})\n')
                     break
+                except KeyboardInterrupt:
+                    save_progress_to_json(TERM)
+                    print(f'Saving progress...')
                 except Exception as e:
+                    save_progress_to_json(TERM)
                     print(f'sth went wrong with writing transcript from {date} (proceeding {proceeding_number}):\n{e}\n')
                     break
