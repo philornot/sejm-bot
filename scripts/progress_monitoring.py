@@ -10,12 +10,18 @@ def save_progress_to_json(term):
     base_path = repo_root / f'speeches_term{term}'
     path = pathlib.Path(base_path)
 
-    proceedings = sorted(path.iterdir(), key=lambda p: int(p.name.replace('proceeding', '')))
+    all_proceedings = path.iterdir()
+    non_empty_proceedings = [p for p in all_proceedings if any(p.iterdir())]
+    proceedings = sorted(non_empty_proceedings, key=lambda p: int(p.name.replace('proceeding', '')))
+
     last_proceeding = proceedings[-1].name
     last_proceeding_path = pathlib.Path(f'{base_path}/{last_proceeding}')
     last_proceeding_number = int(last_proceeding.replace('proceeding', ''))
 
-    dates = sorted(last_proceeding_path.iterdir())
+    all_dates = last_proceeding_path.iterdir()
+    non_empty_dates = [d for d in all_dates if any(d.iterdir())]
+    dates = sorted(non_empty_dates)
+
     last_date = dates[-1].name
     last_date_path = pathlib.Path(f'{base_path}/{last_proceeding}/{last_date}')
 
