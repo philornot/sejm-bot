@@ -46,12 +46,12 @@ def get_speech_transcripts(proceeding_number, date, transcript_number):
 def write_speech_to_json(proceeding_number, date, transcript_number):
     base_dir = f'../speeches_term{TERM}/proceeding{proceeding_number}/{date}'
     file_path = f'{base_dir}/transcript{transcript_number}.json'
-    pathlib.Path(base_dir).mkdir(parents=True, exist_ok=True)
 
     speeches = get_speech_transcripts(proceeding_number, date, transcript_number)
     if isinstance(speeches, int):
         raise RuntimeError(f'Request failed with status: {speeches}')
 
+    pathlib.Path(base_dir).mkdir(parents=True, exist_ok=True)
     json_content = json.dumps(speeches, indent=4, ensure_ascii=False)
     with open(file_path, 'w', encoding='utf-8') as file:
         file.write(json_content)
