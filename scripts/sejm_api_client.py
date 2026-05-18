@@ -4,11 +4,9 @@ import pathlib
 import requests
 from bs4 import BeautifulSoup
 
+from config import TERM, BASE_API_URL
 from scripts.progress_monitoring import read_progress_from_json, save_progress_to_json
 from scripts.save_and_read_proceeding_dates import read_proceeding_dates_from_file
-
-TERM = 10
-BASE_API_URL = 'https://api.sejm.gov.pl/sejm'
 
 
 def format_paragraphs(speaker):
@@ -85,7 +83,8 @@ if __name__ == "__main__":
                     transcript_number += 1
                     continue
                 try:
-                    print(f'writing transcript {transcript_number} from proceeding {proceeding_number} from date {date}')
+                    print(
+                        f'writing transcript {transcript_number} from proceeding {proceeding_number} from date {date}')
                     write_speech_to_json(proceeding_number, date, transcript_number)
                     transcript_number += 1
                 except RuntimeError:
@@ -97,5 +96,6 @@ if __name__ == "__main__":
                     print(f'Saving progress...')
                 except Exception as e:
                     save_progress_to_json(TERM)
-                    print(f'sth went wrong with writing transcript from {date} (proceeding {proceeding_number}):\n{e}\n')
+                    print(
+                        f'sth went wrong with writing transcript from {date} (proceeding {proceeding_number}):\n{e}\n')
                     break
