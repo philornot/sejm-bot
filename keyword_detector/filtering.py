@@ -2,6 +2,7 @@ import json
 import pathlib
 
 from config import get_the_great_filter
+from keyword_detector.config import FUNNY_THRESHOLD, ELITE_TRESHOLD
 from scraper.config import TERM
 
 
@@ -27,12 +28,11 @@ def determine_funniness(speeche):
 def add_to_funny_database(proceeding_number, date, transcript_number, funniness):
     speech_dict = read_speech_from_json(proceeding_number, date, transcript_number)
     repo_root = pathlib.Path(__file__).parent.parent
-    if funniness <= 10:
-        file_path = repo_root / f'funny_term{TERM}' / f'proceeding{proceeding_number}' / 'funny_transcripts.json'
-        dir_path = repo_root / f'funny_term{TERM}' / f'proceeding{proceeding_number}'
-    else:
+    dir_path = repo_root / f'funny_term{TERM}'
+    if funniness >= ELITE_TRESHOLD:
         file_path = repo_root / f'funny_term{TERM}' / 'elite.json'
-        dir_path = repo_root / f'funny_term{TERM}'
+    else:
+        file_path = repo_root / f'funny_term{TERM}' / 'funny_transcripts.json'
     for speaker, speech in speech_dict.items():
         speech_data = {
             "speaker": speaker,
@@ -84,13 +84,12 @@ def main(term):
                 speech_dict = read_speech_from_json(proceeding_number, date_dir.name, transcript_number)
                 for speaker, speech in speech_dict.items():
                     funniness = determine_funniness(speech)
-                    if funniness > 2:
+                    if funniness > FUNNY_THRESHOLD:
                         # print(speaker)
                         add_to_funny_database(proceeding_number, date_dir.name, transcript_number, funniness)
                         if funniness > max_fun:
                             max_fun = funniness
-                    if funniness > 10:
-                        print(speech)
+
     return max_fun
 
 
