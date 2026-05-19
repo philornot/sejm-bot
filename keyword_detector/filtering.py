@@ -19,7 +19,7 @@ def determine_funniness(speeche):
     for category, keywords in great_filter.items():
         for keyword in keywords:
             if keyword in speeche.lower():
-                #print(keyword, category)
+                # print(keyword, category)
                 funniness += category
     return funniness
 
@@ -92,6 +92,7 @@ def main(term):
                     if funniness > 10:
                         print(speech)
     return max_fun
+
+
 if __name__ == "__main__":
     print(main(TERM))
-
