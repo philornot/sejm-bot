@@ -1,0 +1,16 @@
+high:
+  - "wyłącza mikrofon"
+  - "skandal"
+
+medium:
+  - "głos z sali"
+  - "poruszenie"
+  - "ha, ha"
+  - "gwar na sali"
+  - "(dzwonek)"
+  - "(Poseł"
+
+low:
+  - "oklaski"
+  - "dzwonek"
+
