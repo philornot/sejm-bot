@@ -30,8 +30,8 @@ def add_to_funny_database(proceeding_number, date, transcript_number):
 
 
 # speeches_term9/proceeding2/2019-12-12/transcript3.json
-# test_speeche = "Szanowna Pani Marszałek! Wysoka Izbo! Składam wniosek formalny o przerwanie posiedzenia i zwołanie Konwentu Seniorów w celu rozszerzenia porządku obrad o punkt dotyczący informacji ministra sprawiedliwości na temat nieprawidłowości w realizacji programu ˝Praca dla więźniów˝ i nadzorze nad nim. (Oklaski)\nSzanowni Państwo! Mamy do czynienia z wynikami, które są bezprecedensowe. NIK skierował 16 zawiadomień do prokuratury w sprawie realizacji tego programu. Chodzi o nieprawidłowości, które mogą dotyczyć 27 postępowań, które zostały przeprowadzone ze złamaniem ustawy o zamówieniach publicznych, co mogło narazić na stratę 115 mln zł - źle wydatkowanych.\nSzanowni Państwo! Ta sprawa powoduje, i o tym mówi NIK, powstawanie mechanizmów korupcyjnych. Wysoka Izba powinna mieć informację (Dzwonek) na temat tej sytuacji i minister Ziobro powinien przed Wysoką Izbą się z tego wytłumaczyć. Dziękuję bardzo."
-# print(determine_funniness(test_speeche))
+# test_speech = "Szanowna Pani Marszałek! Wysoka Izbo! Składam wniosek formalny o przerwanie posiedzenia i zwołanie Konwentu Seniorów w celu rozszerzenia porządku obrad o punkt dotyczący informacji ministra sprawiedliwości na temat nieprawidłowości w realizacji programu ˝Praca dla więźniów˝ i nadzorze nad nim. (Oklaski)\nSzanowni Państwo! Mamy do czynienia z wynikami, które są bezprecedensowe. NIK skierował 16 zawiadomień do prokuratury w sprawie realizacji tego programu. Chodzi o nieprawidłowości, które mogą dotyczyć 27 postępowań, które zostały przeprowadzone ze złamaniem ustawy o zamówieniach publicznych, co mogło narazić na stratę 115 mln zł - źle wydatkowanych.\nSzanowni Państwo! Ta sprawa powoduje, i o tym mówi NIK, powstawanie mechanizmów korupcyjnych. Wysoka Izba powinna mieć informację (Dzwonek) na temat tej sytuacji i minister Ziobro powinien przed Wysoką Izbą się z tego wytłumaczyć. Dziękuję bardzo."
+# print(determine_funniness(test_speech))
 
 def main(term):
     repo_root = pathlib.Path(__file__).parent.parent
