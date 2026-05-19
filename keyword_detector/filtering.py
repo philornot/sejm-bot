@@ -39,7 +39,7 @@ def add_to_funny_database(proceeding_number, date, transcript_number, funniness)
             "speech": speech,
             "funniness": funniness,
             "date": date,
-            "proceeding number": proceeding_number,
+            "proceeding_number": proceeding_number,
             "transcript_number": transcript_number
         }
 
