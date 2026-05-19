@@ -3,3 +3,4 @@
 .vscode
 scraper/config.yaml
 scraper/term*progress.json
+/funny_term*
