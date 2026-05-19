@@ -1,8 +1,7 @@
 import json
 import pathlib
 
-from config import get_the_great_filter
-from keyword_detector.config import FUNNY_THRESHOLD, ELITE_TRESHOLD
+from keyword_detector.config import FUNNY_THRESHOLD, ELITE_THRESHOLD, get_the_great_filter
 from scraper.config import TERM
 
 
@@ -14,12 +13,12 @@ def read_speech_from_json(proceeding_number, date, transcript_number):
     return speech
 
 
-def determine_funniness(speeche):
+def determine_funniness(speech):
     great_filter = get_the_great_filter()
     funniness = 0
     for category, keywords in great_filter.items():
         for keyword in keywords:
-            if keyword in speeche.lower():
+            if keyword in speech.lower():
                 # print(keyword, category)
                 funniness += category
     return funniness
@@ -29,7 +28,7 @@ def add_to_funny_database(proceeding_number, date, transcript_number, funniness)
     speech_dict = read_speech_from_json(proceeding_number, date, transcript_number)
     repo_root = pathlib.Path(__file__).parent.parent
     dir_path = repo_root / f'funny_term{TERM}'
-    if funniness >= ELITE_TRESHOLD:
+    if funniness >= ELITE_THRESHOLD:
         file_path = repo_root / f'funny_term{TERM}' / 'elite.json'
     else:
         file_path = repo_root / f'funny_term{TERM}' / 'funny_transcripts.json'
@@ -56,7 +55,7 @@ def add_to_funny_database(proceeding_number, date, transcript_number, funniness)
             with open(file_path, 'r') as file:
                 funny_speeches = json.load(file)
             if speech_data in funny_speeches:
-                break
+                continue
             funny_speeches.append(speech_data)
             json_str = json.dumps(funny_speeches, indent=4, ensure_ascii=False)
             with open(file_path, 'w') as file:
