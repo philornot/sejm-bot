@@ -15,7 +15,7 @@ def save_proceeding_dates_to_file(term):
     Returns:
         A list of date strings if successful, None otherwise.
     """
-    file_path = f'../proceeding_dates/term{term}.json'
+    file_path = f'proceeding_dates/term{term}.json'
     url = f'{BASE_API_URL}/term{term}/proceedings'
     response = requests.get(url)
     if not response.ok:
@@ -39,7 +39,7 @@ def save_proceeding_dates_to_file(term):
 
     json_str = json.dumps(dates, indent=4)
     # print(json_str)
-    Path("../proceeding_dates").mkdir(exist_ok=True)
+    Path("proceeding_dates").mkdir(exist_ok=True)
     with open(file_path, 'w') as json_file:
         json_file.write(json_str)
         return dates
@@ -54,11 +54,12 @@ def read_proceeding_dates_from_file(term):
     Returns:
         A dict of numbers and date strings loaded from the file.
     """
-    file_path = f'../proceeding_dates/term{term}.json'
+    file_path = f'proceeding_dates/term{term}.json'
     with open(file_path, 'r') as json_file:
         proceedings = json.load(json_file)
     return proceedings
 
 
-for term in range(7, 11):
-    save_proceeding_dates_to_file(term)
+if __name__ == "__main__":
+    for term in range(7, 11):
+        save_proceeding_dates_to_file(term)

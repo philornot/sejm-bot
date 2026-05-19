@@ -5,8 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from config import TERM, BASE_API_URL
-from scripts.progress_monitoring import read_progress_from_json, save_progress_to_json
-from scripts.save_and_read_proceeding_dates import read_proceeding_dates_from_file
+from scraper.progress_monitoring import read_progress_from_json, save_progress_to_json
+from scraper.save_and_read_proceeding_dates import read_proceeding_dates_from_file
 
 
 def format_paragraphs(speaker):
