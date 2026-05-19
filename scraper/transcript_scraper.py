@@ -55,13 +55,6 @@ def write_speech_to_json(proceeding_number, date, transcript_number):
         file.write(json_content)
 
 
-def read_speeches_from_json(proceeding_number, date, transcript_number):
-    file_path = f'../speeches_term{TERM}/proceeding{proceeding_number}/{date}/transcript{transcript_number}.json'
-    with open(file_path, 'r') as json_file:
-        speeches = json.load(json_file)
-    return speeches
-
-
 if __name__ == "__main__":
     progress_data = read_progress_from_json(TERM)
     last_proceeding = progress_data['last_proceeding']

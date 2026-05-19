@@ -1,16 +1,16 @@
-high:
+3: # high
   - "wyłącza mikrofon"
   - "skandal"
 
-medium:
+2: # medium
   - "głos z sali"
   - "poruszenie"
   - "ha, ha"
   - "gwar na sali"
-  - "(dzwonek)"
   - "(Poseł"
 
-low:
+1: # low
   - "oklaski"
   - "dzwonek"
 
+# 0 = not funny
